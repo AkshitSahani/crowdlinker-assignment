@@ -1,8 +1,15 @@
-.App {
-  text-align: center;
+.App{
+  /* text-align: center; */
+  /* width: 100%; */
+  height: 500px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.App-logo {
+/* .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
@@ -30,4 +37,59 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+.login-form, .signup-form{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  /* margin-bottom: 10px; */
+  /* width: 100%; */
+  height: 150px;
+}
+
+.signup-form{
+  height: 375px;
+}
+
+.login-container, .signup-container, .home-container{
+  text-align: center;
+  width: 90%;
+  /* border: 2px solid red; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* .toggle-signup-login{
+  align-self: flex-end;
+  color:red;
+} */
+
+.welcome{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+}
+
+label {
+  flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  height: 40px;
+  /* width: 80%; */
+  /* padding-left: 5%; */
+}
+
+.confirmation-input {
+  display: flex;
+  align-self: center;
+}
+
+.submit-button{
+  /* margin-top: 150px; */
 }

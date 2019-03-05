@@ -12,14 +12,26 @@ class Home extends Component {
 
   render(){
     return (
-      <div>
-        <p>
-          Home
-        </p>
+      <div className="home-container">
 
-        <button onClick={this.onButtonPress}>
-          {this.state.type === 'login' ? "Sign Up" : "Login"}
-        </button>
+        <div className="welcome">
+          <span>
+            Welcome
+          </span>
+
+          <span>
+            Home
+          </span>
+
+          <button
+            onClick={this.onButtonPress}
+            className="toggle-signup-login"
+            >
+            {this.state.type === 'login' ? "Sign Up" : "Login"}
+          </button>
+        </div>
+
+
         {
           this.state.type === 'login' ?
             <Login />

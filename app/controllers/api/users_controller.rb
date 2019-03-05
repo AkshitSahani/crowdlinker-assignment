@@ -1,9 +1,12 @@
+require 'pry';
+
 module Api
   class UsersController < ApplicationController
     skip_before_action :authenticate_request, only: [:create]
-    
+
     def create
       @user = User.new(user_params)
+      binding.pry
       if @user.save
         render json: @user, status: :created
       else
@@ -28,7 +31,7 @@ module Api
     private
 
     def user_params
-      params.require(:user).permit(:id, :first_name, :last_name, :email, :password_digest)
+      params.require(:user).permit(:password, :id, :first_name, :last_name, :email)
     end
   end
 end

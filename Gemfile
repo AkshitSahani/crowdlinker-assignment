@@ -47,3 +47,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'jwt'
 
 gem 'simple_command'
+
+gem 'rack-cors'
+
+gem 'pry', '~> 0.12.2'
