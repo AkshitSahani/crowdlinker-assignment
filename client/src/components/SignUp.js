@@ -1,5 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {connect} from 'react-redux';
+import * as Actions from '../actions/UserActions';
+let passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
+let emailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i;
 
 class SignUp extends Component {
   state = {
@@ -8,30 +12,55 @@ class SignUp extends Component {
     lastName: '',
     email: '',
     password: '',
-    passwordConfirmation: ''
+    passwordConfirmation: '',
+    error: '',
+    successMessage: ''
   }
 
   onChange = (event, type) => this.setState({[type]: event.target.value});
 
-  validateInput = () => {
+  // validateInput = () => {
+  //   const {firstName, lastName, email, password, passwordConfirmation} = this.state;
+  //   if(firstName)
+  //   return true
+  // }
 
+  renderErrors = () => {
+    if(this.state.error.constructor === Array){
+      return this.state.error.map((e) => {
+        return (
+          <p className="error">
+            {e}
+          </p>
+        )
+      });
+    }
+    return this.state.error;
   }
 
   onSubmit = async(event) => {
     event.preventDefault();
     try{
-      this.validateInput();
-
-      const {firstName, lastName, email, password} = this.state;
-      const url = `${global.url}/users`;
-      const data = { first_name: firstName, last_name: lastName, email, password};
-      console.log(url, data)
-      const response = await axios({method: "POST", data, url});
-      console.log('resp from signup', response);
+      // const validated = this.validateInput();
+      let validated = true;
+      if(validated){
+        const {firstName, lastName, email, password, passwordConfirmation} = this.state;
+        console.log('vars from state', firstName, lastName, email, password, passwordConfirmation);
+        const url = `${global.url}/users`;
+        const formData = {first_name: firstName, last_name: lastName, email, password, password_confirmation: passwordConfirmation};
+        console.log(url, data)
+        const response = await axios({method: "POST", data: formData, url});
+        console.log('resp from signup', response);
+        const {data, message} = response.data
+        this.props.setUserInfo(data);
+        this.setState({successMessage: message});
+        setTimeout(() => this.props.renderLogin(password), 1500);
+      }
     }
     catch(e){
       console.log('error in signup', e);
       console.log('full error', e.response);
+      console.log(e.response.data);
     }
   }
 
@@ -88,7 +117,7 @@ class SignUp extends Component {
             <input
               // ref={input => excerpt = input}
               type="password"
-              // placeholder=""
+              placeholder="********"
               required
               value={this.state.password}
               onChange={(e) => this.onChange(e, 'password')}
@@ -100,7 +129,7 @@ class SignUp extends Component {
               className="confirmation-input"
               // ref={input => excerpt = input}
               type="password"
-              // placeholder="Excerpt..."
+              placeholder="********"
               required
               value={this.state.passwordConfirmation}
               onChange={(e) => this.onChange(e, 'passwordConfirmation')}
@@ -110,9 +139,25 @@ class SignUp extends Component {
               Sign Up
             </button>
         </form>
+
+        {
+          this.state.error ?
+            this.renderErrors()
+          :
+          null
+        }
+
+        {
+          this.state.successMessage ?
+            <p className="success-message">
+              {this.state.successMessage}
+            </p>
+          :
+          null
+        }
       </div>
     )
   }
 }
 
-export default SignUp;
+export default connect(null, Actions)(SignUp);

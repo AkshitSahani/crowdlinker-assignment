@@ -1,5 +1,4 @@
 class Article < ApplicationRecord
-
   has_many :likes
 
   validates :title,
@@ -7,6 +6,6 @@ class Article < ApplicationRecord
     uniqueness: {case_sensitive: false}
 
   validates :description,
-    presence: true,
-
+    presence: true
+    
 end

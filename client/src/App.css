@@ -73,6 +73,7 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+  margin-top: 20px;
 }
 
 label {
@@ -92,4 +93,39 @@ label {
 
 .submit-button{
   /* margin-top: 150px; */
+}
+
+.error {
+  color: red;
+  text-align: center;
+  /* line-height: 15px; */
+  margin: 5px;
+}
+
+.success-message {
+  color: green;
+  text-align: center;
+  /* line-height: 15px; */
+  /* margin: 5px; */
+}
+
+.article-container{
+  width:100%;
+  padding-top: 20px;
+  display: flex;
+}
+
+/* .create-article{
+  display: flex;
+  align-self: flex-end;
+  float: right;
+  color: red;
+} */
+
+.article-header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: inherit;
 }

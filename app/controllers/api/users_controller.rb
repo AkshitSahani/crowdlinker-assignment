@@ -3,12 +3,17 @@ require 'pry';
 module Api
   class UsersController < ApplicationController
     skip_before_action :authenticate_request, only: [:create]
+    wrap_parameters :user, include: [:first_name, :last_name, :email, :password, :password_confirmation]
 
     def create
       @user = User.new(user_params)
-      binding.pry
       if @user.save
-        render json: @user, status: :created
+        @user_filtered = {data: {}, message: 'User sign up successful!'};
+        @user_filtered[:data][:first_name] = @user.first_name;
+        @user_filtered[:data][:last_name] = @user.last_name;
+        @user_filtered[:data][:email] = @user.email;
+        # binding.pry
+        render json: @user_filtered, status: :created
       else
         render json: @user.errors, status: :unprocessable_entity
       end
@@ -31,7 +36,7 @@ module Api
     private
 
     def user_params
-      params.require(:user).permit(:password, :id, :first_name, :last_name, :email)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
     end
   end
 end
