@@ -1,23 +1,31 @@
+require 'pry'
+
 module Api
   class LikesController < ApplicationController
     def create
-      @like = Like.new(like_params)
-      if @like.save
-        render json: @like, status: :created
+      @like = Like.where(user_id: current_user.id).where(article_id: params[:article_id])
+      # binding.pry
+      if(@like.count > 0)
+        @like[0].destroy
+        render json: {message: 'Like successfully removed!'}, status: :ok
       else
-        render json: @like.errors, status: :unprocessable_entity
+        # binding.pry
+        @like = Like.new(article_id: params[:article_id], user_id: current_user.id)
+        # binding.pry
+        if @like.save
+          render json: {message: "Like successfully created!"}, status: :ok
+        else
+          render json: @like.errors, status: :unprocessable_entity
+        end
+
       end
     end
 
-    def destroy
-      @like = Like.find(params[:id])
-      @like.destoy
+    private
+
+    def like_params
+      params.require(:like).permit(:user_id, :article_id)
     end
-  end
-
-  private
-
-  def like_params
-    params.require(:like).permit(:id, :user_id, :article_id)
+    
   end
 end

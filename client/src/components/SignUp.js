@@ -72,9 +72,9 @@ class SignUp extends Component {
           onSubmit={this.onSubmit}
           className="signup-form"
         >
-          <p>
+          <h2>
             Sign Up
-          </p>
+          </h2>
 
           <label>
             First Name
@@ -124,8 +124,9 @@ class SignUp extends Component {
             />
           </label>
           <label>
-            Password Confirmation
+            Confirm Password
             <input
+              style={{marginLeft: 'auto'}}
               className="confirmation-input"
               // ref={input => excerpt = input}
               type="password"

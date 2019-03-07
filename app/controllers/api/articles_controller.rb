@@ -1,15 +1,22 @@
+require 'pry';
+
 module Api
   class ArticlesController < ApplicationController
 
     def index
       @articles = Article.all
+      @articles.each do |article|
+        @like = Like.where(article_id: article.id).where(user_id: current_user.id)
+        # binding.pry
+        @like.count > 0 ? article[:liked] = true : article[:liked] = false;
+      end
       render json: @articles
     end
 
     def create
       @article = Article.new(article_params)
       if @article.save
-        render json: @article, status: :created
+        render json: @article, status: :ok
       else
         render json: @article.errors, status: :unprocessable_entity
       end
@@ -23,7 +30,7 @@ module Api
     def udpate
       @article = Article.find(params[:id])
       if @article.update(article_params)
-        render json: @article, staus: :updated
+        render json: @article, staus: :ok
       else
         render json: @article.errors, status: :unprocessable_entity
       end
@@ -34,11 +41,11 @@ module Api
       @article.destroy
     end
 
-  end
+    private
 
-  private
-
-  def article_params
-    params.require(:article).permit(:id, :title, :description)
+    def article_params
+      params.require(:article).permit(:id, :title, :description)
+    end
+    
   end
 end

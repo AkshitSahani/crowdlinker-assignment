@@ -98,9 +98,9 @@ class Home extends Component {
             Welcome {this.props.loggedIn ? this.props.firstName : null}
           </span>
 
-          <span>
+          {/* <span>
             Home
-          </span>
+          </span> */}
 
           <button
             onClick={this.onButtonPress}

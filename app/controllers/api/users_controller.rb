@@ -13,7 +13,7 @@ module Api
         @user_filtered[:data][:last_name] = @user.last_name;
         @user_filtered[:data][:email] = @user.email;
         # binding.pry
-        render json: @user_filtered, status: :created
+        render json: @user_filtered, status: :ok
       else
         render json: @user.errors, status: :unprocessable_entity
       end
@@ -27,7 +27,7 @@ module Api
     def update
       @user = User.find(params[:id])
       if @user.update(user_params)
-        render json: @user, staus: :updated
+        render json: @user, status: :ok
       else
         render json: @user.errors, status: :unprocessable_entity
       end
