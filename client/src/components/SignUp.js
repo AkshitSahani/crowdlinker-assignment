@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import * as Actions from '../actions/UserActions';
 import {renderErrors} from '../actions/UserActions';
 import ErrorRenderer from './ErrorRenderer';
+import Spinner from './Spinner';
 
 class SignUp extends Component {
   state = {
@@ -14,63 +15,51 @@ class SignUp extends Component {
     password: '',
     passwordConfirmation: '',
     error: '',
-    successMessage: ''
+    successMessage: '',
+    loading: false
   }
 
   onChange = (event, type) => this.setState({[type]: event.target.value});
 
-  // validateInput = () => {
-  //   const {firstName, lastName, email, password, passwordConfirmation} = this.state;
-  //   if(firstName)
-  //   return true
-  // }
-
-  // renderErrors = () => {
-  //   // if(this.state.error.constructor === Array){
-  //     return this.state.error.map((e) => {
-  //       return (
-  //         <li className="error">
-  //           {e}
-  //         </li>
-  //       )
-  //     });
-  //   // }
-  //   // return this.state.error;
-  // }
-
   onSubmit = async(event) => {
     event.preventDefault();
-    if(this.state.error.length === 1){
-      this.setState({error: ''});
-    }
+    this.setState({error: '', loading: true});
+    // if(this.state.error.length === 1){
+    //   this.setState({error: ''});
+    // }
     try{
-      // const validated = this.validateInput();
-      let validated = true;
-      if(validated){
-        const {firstName, lastName, email, password, passwordConfirmation} = this.state;
-        console.log('vars from state', firstName, lastName, email, password, passwordConfirmation);
-        const url = `${global.url}/users`;
-        const formData = {first_name: firstName, last_name: lastName, email, password, password_confirmation: passwordConfirmation};
-        console.log(url, formData)
-        const response = await axios({method: "POST", data: formData, url});
-        console.log('resp from signup', response);
-        const {data, message} = response.data
-        this.props.setUserInfo(data);
-        this.setState({successMessage: message});
-        setTimeout(() => this.props.renderLogin(password), 1500);
-      }
+      const {firstName, lastName, email, password, passwordConfirmation} = this.state;
+      console.log('vars from state', firstName, lastName, email, password, passwordConfirmation);
+      const url = `${global.url}/users`;
+      const formData = {first_name: firstName, last_name: lastName, email, password, password_confirmation: passwordConfirmation};
+      console.log(url, formData)
+      const response = await axios({method: "POST", data: formData, url});
+      console.log('resp from signup', response);
+      const {data, message} = response.data
+      this.props.setUserInfo(data);
+      this.setState({successMessage: message, loading: false});
+      setTimeout(() => this.props.renderLogin(password), 1500);
     }
     catch(e){
       console.log('error in signup', e);
       console.log('full error', e.response);
       console.log(e.response.data.message);
-      this.setState({error: e.response.data.message});
+      this.setState({error: e.response.data.message, loading: false});
     }
   }
 
   render(){
     return (
       <div className="signup-container">
+
+        {
+          this.state.loading ?
+            <Spinner
+              loading={this.state.loading}
+            />
+          :
+          null
+        }
 
         <form
           onSubmit={this.onSubmit}
@@ -155,6 +144,8 @@ class SignUp extends Component {
           :
           null
         }
+
+
       </div>
     )
   }

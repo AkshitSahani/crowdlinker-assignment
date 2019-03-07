@@ -3,6 +3,7 @@ import axios from 'axios';
 import {connect} from 'react-redux';
 import NewArticle from '../components/NewArticle';
 import Article from '../components/Article';
+import Spinner from '../components/Spinner';
 
 class Articles extends Component {
 
@@ -10,6 +11,7 @@ class Articles extends Component {
     articles: null,
     view: 'listArticles',
     articleHeight: null,
+    loading: true
   }
 
   fetchArticles = async(type) => {
@@ -70,6 +72,7 @@ class Articles extends Component {
           <span
             className="article-parent"
             style={{height: this.state.articleHeight}}
+            key={index}
           >
             <Article
               article={article}

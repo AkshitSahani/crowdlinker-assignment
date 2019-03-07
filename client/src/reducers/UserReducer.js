@@ -16,7 +16,11 @@ const initialState = {
       return {...state, user: {...state.user, ...action.user}, loggedIn: true};
     case 'setUserToken':
       // console.log('in set user token', action.token, {...state, user: {...state.user, token: action.token}});
-      return {...state, user: {...state.user, token: action.token}}
+      return {...state, user: {...state.user, token: action.token}};
+
+    case 'setWindowDimensions':
+      console.log('window dimensions', action.width, action.height);
+      return {...state, height: action.height, width: action.width};
     default:
       return state;
   }

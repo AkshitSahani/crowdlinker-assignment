@@ -8,14 +8,4 @@ export const setUserToken = (token) => ({type: 'setUserToken', token});
 
 export const logout = () => ({type: 'Logout'});
 
-//COMMON FUNCTION BELOW
-
-export const renderErrors = (comp) => {
-  return comp.state.error.map((e) => {
-    return (
-      <li className="error">
-        {e}
-      </li>
-    )
-  });
-}
+export const setWindowDimensions = (width, height) => ({type: 'setWindowDimensions', height, width});

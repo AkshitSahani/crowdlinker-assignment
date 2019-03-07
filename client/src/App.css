@@ -184,3 +184,14 @@ input {
 .article-headline{
   text-decoration: underline;
 }
+
+.spinner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  /* z-index: 50; */
+  position: absolute;
+   top: 0;
+   left: 0;
+}

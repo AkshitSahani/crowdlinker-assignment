@@ -2,19 +2,21 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import * as Actions from '../actions/UserActions';
+import Spinner from './Spinner';
 
 class Login extends Component {
   state = {
     email: this.props.signedUp ? this.props.user.email : '',
     password: this.props.signedUp ? this.props.password : '',
-    error: ''
+    error: '',
+    loading: false,
   }
 
   onChange = (e, type) => this.setState({[type]: e.target.value});
 
   login = async(e) => {
     e.preventDefault();
-    // this.setState({error: ''});
+    this.setState({loading: true, error: ''});
     try{
       const url = `${global.url}/login`;
       const {email, password} = this.state;
@@ -38,7 +40,7 @@ class Login extends Component {
     catch(e) {
       console.log('e in login', e);
       console.log('full error', e.response);
-      this.setState({error: e.response.data.message});
+      this.setState({error: e.response.data.message, loading: false});
     }
   }
 
@@ -48,6 +50,16 @@ class Login extends Component {
         <h2>
           Login
         </h2>
+
+        {
+            this.state.loading ?
+              <Spinner
+                loading={this.state.loading}
+              />
+            :
+            null
+        }
+
         <form
           onSubmit={this.login}
           className="login-form"

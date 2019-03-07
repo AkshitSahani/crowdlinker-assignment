@@ -14,7 +14,24 @@ class Home extends Component {
     password: ''
   }
 
+  // componentDidMount() {
+  //   this.updateWindowDimensions();
+  //   window.addEventListener('resize', this.updateWindowDimensions);
+  // }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions = () => {
+    // this.setState({ width: window.innerWidth, height: window.innerHeight });
+    this.props.setWindowDimensions(window.innerWidth, window.innerHeight);
+  }
+
   componentDidMount = () => {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+
     const token = localStorage.getItem('crowdlinkerUserToken');
     const firstName = localStorage.getItem('crowdlinkerUserFirstName');
 
@@ -111,6 +128,10 @@ class Home extends Component {
         </div>
 
         {this.renderScreen()}
+
+        {/* <Spinner 
+
+        /> */}
       </div>
     )
   }

@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import ErrorRenderer from './ErrorRenderer';
+import Spinner from './Spinner';
 
 class NewArticle extends Component {
 
@@ -9,27 +10,29 @@ class NewArticle extends Component {
     title: '',
     description: '',
     successMessage: '',
-    error: ''
+    error: '',
+    loading: false
   }
 
   submitArticle = async(e) => {
     e.preventDefault();
-    if(this.state.error.length === 1){
-      this.setState({error: ''});
-    }
+    // if(this.state.error.length === 1){
+    //   this.setState({error: ''});
+    // }
+    this.setState({error: '', loading: true});
     try{
       const {title, description} = this.state;
       const url = `${global.url}/articles`;
       const data = {title, description};
       const response = await axios({method: 'POST', url, data, headers: {Authorization: this.props.token}});
       console.log('resp from post article', response);
-      this.setState({successMessage: 'Article created successfully!'});
+      this.setState({loading: false, successMessage: 'Article created successfully!'});
       setTimeout(() => this.props.backToArticleList(), 1500);
     }
     catch(e){
       console.log('e in post article', e);
       console.log('full error', e.response);
-      this.setState({error: e.response.data.message});
+      this.setState({error: e.response.data.message, loading: false});
     }
   }
 
@@ -42,6 +45,16 @@ class NewArticle extends Component {
         <h3 className="article-headline">
           Publish a New Article
         </h3>
+
+        {
+          this.state.loading ?
+            <Spinner
+              loading={this.state.loading}
+            />
+          :
+          null
+
+        }
 
         <form
           onSubmit={this.submitArticle}
