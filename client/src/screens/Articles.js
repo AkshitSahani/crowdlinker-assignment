@@ -14,7 +14,7 @@ class Articles extends Component {
     view: 'listArticles',
     // articleHeight: null,
     count: 0,
-    loading: true,
+    // loading: true,
   }
 
   fetchArticles = async(type) => {
@@ -84,11 +84,9 @@ class Articles extends Component {
   onClick = () => this.state.view === 'listArticles' ? this.setState({view: 'newArticle'}) : this.setState({view: 'listArticles'});
 
   renderArticles = () => {
-    console.log('calling render articles');
     if(this.state.articles.length){
       return this.state.articles.map((article, index) => {
         const style = this.state.articleHeight ? {height: articleHeight} : {};
-        console.log('style', style);
         return(
           <span
             className="article-parent"
@@ -138,9 +136,7 @@ class Articles extends Component {
           </button>
         </div>
 
-        <Spinner
-          loading={this.state.loading}
-        />
+
 
         {
           this.state.view === 'newArticle' ?
@@ -154,8 +150,11 @@ class Articles extends Component {
               this.state.articles ?
                 this.renderArticles()
               :
-              null
-              // spinner needs to go above instead of null
+              <Spinner
+                loading={this.state.loading}
+                height={this.props.height}
+                width={this.props.width}
+              />
             }
           </div>
         }
@@ -166,9 +165,11 @@ class Articles extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log('state in articles', state);
+  // console.log('state in articles', state);
   return{
-    token: state.userInfo.user.token
+    token: state.userInfo.user.token,
+    width: state.userInfo.width,
+    height: state.userInfo.height
   }
 }
 

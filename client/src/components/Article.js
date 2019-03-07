@@ -4,7 +4,7 @@ class Article extends Component {
 
   componentDidMount(){
     const height = this.article.clientHeight;
-    console.log('height of article', height);
+    // console.log('height of article', height);
     this.props.finalizeArticleHeight(height);
   }
 

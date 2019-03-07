@@ -24,8 +24,8 @@ class Spinner extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    width: state.userInfo.width,
-    height: state.userInfo.height
+    // width: state.userInfo.width,
+    // height: state.userInfo.height
   }
 }
 

@@ -45,12 +45,14 @@ class SignUp extends Component {
   }
 
   render(){
+    console.log(this.props.width, this.props.height);
     return (
       <div className="signup-container">
 
         <Spinner
           loading={this.state.loading}
-          // loading={true}
+          height={this.props.height}
+          width={this.props.width}
         />
 
         <form
@@ -143,4 +145,11 @@ class SignUp extends Component {
   }
 }
 
-export default connect(null, Actions)(SignUp);
+const mapStateToProps = (state) => {
+  return {
+    width: state.userInfo.width,
+    height: state.userInfo.height
+  }
+}
+
+export default connect(mapStateToProps, Actions)(SignUp);

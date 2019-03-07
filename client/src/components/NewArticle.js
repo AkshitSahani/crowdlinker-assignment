@@ -43,10 +43,11 @@ class NewArticle extends Component {
           Publish a New Article
         </h3>
 
-            <Spinner
-              loading={this.state.loading}
-              // loading={true}
-            />
+        <Spinner
+          loading={this.state.loading}
+          height={this.props.height}
+          width={this.props.width}
+        />
 
         <form
           onSubmit={this.submitArticle}
@@ -109,7 +110,9 @@ class NewArticle extends Component {
 
 const mapStateToProps = (state) => {
   return{
-    token: state.userInfo.user.token
+    token: state.userInfo.user.token,
+    width: state.userInfo.width,
+    height: state.userInfo.height
   }
 }
 

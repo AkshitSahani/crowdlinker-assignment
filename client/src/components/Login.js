@@ -45,23 +45,17 @@ class Login extends Component {
   }
 
   render(){
+    console.log(this.props.width, this.props.height);
     return (
       <div className="login-container">
         <h2>
           Login
         </h2>
 
-        {/* {
-            this.state.loading ?
-              <Spinner
-                loading={this.state.loading}
-              />
-            :
-            null
-        } */}
-
         <Spinner
           loading={this.state.loading}
+          height={this.props.height}
+          width={this.props.width}
         />
 
         <form
@@ -113,7 +107,9 @@ const mapStateToProps = (state) => {
   const {user, signedUp} = state.userInfo;
   return {
     user,
-    signedUp
+    signedUp,
+    width: state.userInfo.width,
+    height: state.userInfo.height
   }
 }
 
