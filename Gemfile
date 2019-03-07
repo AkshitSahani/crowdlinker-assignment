@@ -51,3 +51,5 @@ gem 'simple_command'
 gem 'rack-cors'
 
 gem 'pry', '~> 0.12.2'
+
+gem 'foreman', '~> 0.82.0'
