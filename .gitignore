@@ -13,4 +13,6 @@
 !/log/.keep
 !/tmp/.keep
 
+/public
+
 .byebug_history
