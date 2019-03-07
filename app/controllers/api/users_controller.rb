@@ -8,28 +8,29 @@ module Api
     def create
       @user = User.new(user_params)
       if @user.save
-        @user_filtered = {data: {}, message: 'User sign up successful!'};
+        @user_filtered = {data: {}, message: 'User signed up successfully!'};
         @user_filtered[:data][:first_name] = @user.first_name;
         @user_filtered[:data][:last_name] = @user.last_name;
         @user_filtered[:data][:email] = @user.email;
         # binding.pry
         render json: @user_filtered, status: :ok
       else
-        render json: @user.errors, status: :unprocessable_entity
+        # binding.pry
+        render json: {message: @user.errors.full_messages}, status: :unprocessable_entity
       end
     end
 
     def show
       @user = User.find(params[:id])
-      render json: @user, status: :ok
+      render json: {data: @user, message: 'User information'}, status: :ok
     end
 
     def update
       @user = User.find(params[:id])
       if @user.update(user_params)
-        render json: @user, status: :ok
+        render json: {data: @user, message: 'User updated successfully!'}, status: :ok
       else
-        render json: @user.errors, status: :unprocessable_entity
+        render json: {message: @user.errors.full_messages}, status: :unprocessable_entity
       end
     end
 

@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import * as Actions from '../actions/UserActions';
-let passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
-let emailRegex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i;
+import {renderErrors} from '../actions/UserActions';
+import ErrorRenderer from './ErrorRenderer';
 
 class SignUp extends Component {
   state = {
@@ -25,21 +25,24 @@ class SignUp extends Component {
   //   return true
   // }
 
-  renderErrors = () => {
-    if(this.state.error.constructor === Array){
-      return this.state.error.map((e) => {
-        return (
-          <p className="error">
-            {e}
-          </p>
-        )
-      });
-    }
-    return this.state.error;
-  }
+  // renderErrors = () => {
+  //   // if(this.state.error.constructor === Array){
+  //     return this.state.error.map((e) => {
+  //       return (
+  //         <li className="error">
+  //           {e}
+  //         </li>
+  //       )
+  //     });
+  //   // }
+  //   // return this.state.error;
+  // }
 
   onSubmit = async(event) => {
     event.preventDefault();
+    if(this.state.error.length === 1){
+      this.setState({error: ''});
+    }
     try{
       // const validated = this.validateInput();
       let validated = true;
@@ -48,7 +51,7 @@ class SignUp extends Component {
         console.log('vars from state', firstName, lastName, email, password, passwordConfirmation);
         const url = `${global.url}/users`;
         const formData = {first_name: firstName, last_name: lastName, email, password, password_confirmation: passwordConfirmation};
-        console.log(url, data)
+        console.log(url, formData)
         const response = await axios({method: "POST", data: formData, url});
         console.log('resp from signup', response);
         const {data, message} = response.data
@@ -60,7 +63,8 @@ class SignUp extends Component {
     catch(e){
       console.log('error in signup', e);
       console.log('full error', e.response);
-      console.log(e.response.data);
+      console.log(e.response.data.message);
+      this.setState({error: e.response.data.message});
     }
   }
 
@@ -79,8 +83,6 @@ class SignUp extends Component {
           <label>
             First Name
             <input
-              // ref={input => title = input}
-              // name="username"
               type="text"
               placeholder="John"
               required
@@ -91,8 +93,6 @@ class SignUp extends Component {
           <label>
             Last Name
             <input
-              // ref={input => title = input}
-              // name="last_name"
               type="text"
               placeholder="Smith"
               required
@@ -103,7 +103,6 @@ class SignUp extends Component {
           <label>
             Email
             <input
-              // ref={input => title = input}
               name="username"
               type="text"
               placeholder="user@example.com"
@@ -115,7 +114,6 @@ class SignUp extends Component {
           <label>
             Password
             <input
-              // ref={input => excerpt = input}
               type="password"
               placeholder="********"
               required
@@ -128,7 +126,6 @@ class SignUp extends Component {
             <input
               style={{marginLeft: 'auto'}}
               className="confirmation-input"
-              // ref={input => excerpt = input}
               type="password"
               placeholder="********"
               required
@@ -136,14 +133,16 @@ class SignUp extends Component {
               onChange={(e) => this.onChange(e, 'passwordConfirmation')}
             />
           </label>
-            <button className="submit-button">
+            <button className="submit-button trigger btn">
               Sign Up
             </button>
         </form>
 
         {
           this.state.error ?
-            this.renderErrors()
+            <ErrorRenderer
+              comp={this}
+            />
           :
           null
         }

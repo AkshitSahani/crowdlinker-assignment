@@ -1,17 +1,22 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
+import ErrorRenderer from './ErrorRenderer';
 
 class NewArticle extends Component {
 
   state = {
     title: '',
     description: '',
-    successMessage: ''
+    successMessage: '',
+    error: ''
   }
 
   submitArticle = async(e) => {
-    e.preventDefault()
+    e.preventDefault();
+    if(this.state.error.length === 1){
+      this.setState({error: ''});
+    }
     try{
       const {title, description} = this.state;
       const url = `${global.url}/articles`;
@@ -24,23 +29,23 @@ class NewArticle extends Component {
     catch(e){
       console.log('e in post article', e);
       console.log('full error', e.response);
+      this.setState({error: e.response.data.message});
     }
   }
 
   onChange = (e, type) => this.setState({[type]: e.target.value});
 
   render(){
-    // console.log('in new article page', this.props.token);
+    console.log('in new article page', this.state.error);
     return(
       <div style={{width: '100%', display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-        <h2>
+        <h3 className="article-headline">
           Publish a New Article
-        </h2>
+        </h3>
 
         <form
           onSubmit={this.submitArticle}
           className="login-form article-form"
-          // style={{height: 300}}
         >
           <label className="article-title-label">
             <span className="article-title-text">
@@ -48,7 +53,6 @@ class NewArticle extends Component {
             </span>
 
             <input
-              // ref={input => title = input}
               name="title"
               type="text"
               placeholder="ReactJS vs AngularJS!"
@@ -57,7 +61,6 @@ class NewArticle extends Component {
               onChange={(e) => this.onChange(e, 'title')}
             />
           </label>
-          {/* <label> */}
 
             <span className="article-desc-label">
               Description
@@ -65,20 +68,26 @@ class NewArticle extends Component {
 
             <textarea
               className="new-article-desc"
-              // ref={input => excerpt = input}
-              // type="description"
               placeholder="The clear winner is React...Duh!"
               required
               value={this.state.description}
               onChange={(e) => this.onChange(e, 'description')}
             />
-          {/* </label> */}
           <button
-            className="submit-button"
+            className="submit-button btn trigger"
           >
             Create
           </button>
         </form>
+
+        {
+          this.state.error ?
+            <ErrorRenderer
+              comp={this}
+            />
+          :
+          null
+        }
 
         {
           this.state.successMessage ?

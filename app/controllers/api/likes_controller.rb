@@ -15,7 +15,7 @@ module Api
         if @like.save
           render json: {message: "Like successfully created!"}, status: :ok
         else
-          render json: @like.errors, status: :unprocessable_entity
+          render json: {message: @like.errors.full_messages}, status: :unprocessable_entity
         end
 
       end
@@ -26,6 +26,6 @@ module Api
     def like_params
       params.require(:like).permit(:user_id, :article_id)
     end
-    
+
   end
 end

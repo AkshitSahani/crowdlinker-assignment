@@ -10,35 +10,37 @@ module Api
         # binding.pry
         @like.count > 0 ? article[:liked] = true : article[:liked] = false;
       end
-      render json: @articles
+      render json: {data: @articles, message: 'All articles'}
     end
 
     def create
       @article = Article.new(article_params)
       if @article.save
-        render json: @article, status: :ok
+        render json:{data: @article, message: 'Article created successfully!'}, status: :ok
       else
-        render json: @article.errors, status: :unprocessable_entity
+        # binding.pry
+        render json: {message: @article.errors.full_messages}, status: :unprocessable_entity
       end
     end
 
     def show
       @article = Article.find(params[:id])
-      render json: @article, status: :ok
+      render json: {data: @article, message: 'Article details'}, status: :ok
     end
 
     def udpate
       @article = Article.find(params[:id])
       if @article.update(article_params)
-        render json: @article, staus: :ok
+        render json: {data: @article, message: 'Article updated successfully!'}, staus: :ok
       else
-        render json: @article.errors, status: :unprocessable_entity
+        render json: {data: @article.errors.full_messages}, status: :unprocessable_entity
       end
     end
 
     def destroy
       @article = Article.find(params[:id])
       @article.destroy
+      render json: {message: 'Article deleted successfully!'}
     end
 
     private
@@ -46,6 +48,6 @@ module Api
     def article_params
       params.require(:article).permit(:id, :title, :description)
     end
-    
+
   end
 end

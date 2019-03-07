@@ -75,7 +75,7 @@ class Login extends Component {
               onChange={(e) => this.onChange(e, 'password')}
             />
           </label>
-          <button className="submit-button">
+          <button className="submit-button trigger btn">
             Login
           </button>
         </form>
@@ -83,7 +83,7 @@ class Login extends Component {
         {
           this.state.error ?
             <p className="error">
-              {this.state.error}
+              {`Oops! ${this.state.error}. Please try again!`}
             </p>
           :
           null

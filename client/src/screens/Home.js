@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import Login from '../components/Login';
 import SignUp from '../components/SignUp';
 import Articles from './Articles';
@@ -18,7 +18,7 @@ class Home extends Component {
     const token = localStorage.getItem('crowdlinkerUserToken');
     const firstName = localStorage.getItem('crowdlinkerUserFirstName');
 
-    console.log('token!!!', token, 'user name', firstName);
+    // console.log('token!!!', token, 'user name', firstName);
     if(token){
       this.setState({screen: 'articles'});
       let obj = {token};
@@ -89,38 +89,26 @@ class Home extends Component {
   }
 
   render(){
-    console.log('logged in status in home', this.props, this.props.loggedIn);
+    // console.log('logged in status in home', this.props, this.props.loggedIn);
     return (
       <div className="home-container">
 
         <div className="welcome">
-          <span>
+          <h4>
             Welcome {this.props.loggedIn ? this.props.firstName : null}
-          </span>
+          </h4>
 
-          {/* <span>
-            Home
-          </span> */}
+          <h1>
+            ArticleLinker
+          </h1>
 
           <button
             onClick={this.onButtonPress}
-            className="toggle-signup-login"
+            className="btn trigger"
             >
             {this.renderButtonText()}
           </button>
         </div>
-
-
-        {/* {
-          this.state.screen === 'login' ?
-            <Login
-              password={this.state.password}
-            />
-          :
-          <SignUp
-            renderLogin={this.renderLogin}
-          />
-        } */}
 
         {this.renderScreen()}
       </div>
@@ -129,7 +117,7 @@ class Home extends Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log('state in home', state);
+  // console.log('state in home', state);
   return {
     loggedIn: state.userInfo.loggedIn,
     firstName: state.userInfo.user && state.userInfo.user.firstName

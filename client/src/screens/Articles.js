@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import NewArticle from '../components/NewArticle';
+import Article from '../components/Article';
 
 class Articles extends Component {
 
   state = {
     articles: null,
-    view: 'listArticles'
+    view: 'listArticles',
+    articleHeight: null,
   }
 
   fetchArticles = async(type) => {
@@ -18,7 +20,7 @@ class Articles extends Component {
       const url = `${global.url}/articles`;
       const response = await axios({method: "GET", url, headers: {Authorization: this.props.token}});
       console.log('response from get articles', response);
-      this.setState({articles: response.data});
+      this.setState({articles: response.data.data});
     }
     catch(e){
       console.log('e in getting articles', e);
@@ -29,6 +31,12 @@ class Articles extends Component {
 
   async componentDidMount(){
     this.fetchArticles();
+  }
+
+  finalizeArticleHeight = (height) => {
+    if(!this.state.articleHeight || this.state.articleHeight < height){
+      this.setState({articleHeight: height});
+    }
   }
 
   backToArticleList = () => this.fetchArticles('update');
@@ -59,30 +67,17 @@ class Articles extends Component {
     if(this.state.articles.length){
       return this.state.articles.map((article, index) => {
         return(
-          <div
-            className="article-outline"
-            key={index}
+          <span
+            className="article-parent"
+            style={{height: this.state.articleHeight}}
           >
-            <div className="article-top-half">
-              <h3 className="article-title">
-                {article.title}
-              </h3>
-
-              <p className="article-desc">
-                {article.description}
-              </p>
-
-            </div>
-
-            <div className="article-bottom-button">
-              <button
-                className={article.liked ? "like blue" : "like"}
-                onClick={() => this.onLike(article.id, index)}
-              >
-                {article.liked ? "Liked" : "Like"}
-              </button>
-            </div>
-          </div>
+            <Article
+              article={article}
+              index={index}
+              onLike={this.onLike}
+              finalizeArticleHeight={this.finalizeArticleHeight}
+            />
+          </span>
         )
       })
 
@@ -95,18 +90,18 @@ class Articles extends Component {
   }
 
   render() {
-    // console.log('in articles', this.props.token);
     return (
       <div className="article-page">
         <div className="article-header">
+          <h2>ARTICLES</h2>
+
           <span style={{color: 'white'}}>
             ARTICLES!!!
           </span>
 
-          <h2>ARTICLES</h2>
 
           <button
-            className="create-article"
+            className="btn trigger"
             onClick={this.onClick}
           >
             {
