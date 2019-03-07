@@ -51,14 +51,18 @@ class Login extends Component {
           Login
         </h2>
 
-        {
+        {/* {
             this.state.loading ?
               <Spinner
                 loading={this.state.loading}
               />
             :
             null
-        }
+        } */}
+
+        <Spinner
+          loading={this.state.loading}
+        />
 
         <form
           onSubmit={this.login}

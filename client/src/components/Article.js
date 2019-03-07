@@ -15,8 +15,7 @@ class Article extends Component {
         className="article-outline"
         ref={(article) => this.article = article}
       >
-        {/* <div> */}
-        <div className="article-top-half">
+        {/* <div className="article-top-half"> */}
           <h3 className="article-title">
             {article.title}
           </h3>
@@ -25,17 +24,16 @@ class Article extends Component {
             {article.description}
           </p>
 
-        </div>
 
         {/* <div> */}
-        <div className="article-bottom-button">
+        {/* <div className="article-bottom-button"> */}
           <button
             className={article.liked ? "like blue btn" : "like btn"}
             onClick={() => onLike(article.id, index)}
           >
             {article.liked ? "Liked" : "Like"}
           </button>
-        </div>
+        {/* </div> */}
       </div>
     )
   }

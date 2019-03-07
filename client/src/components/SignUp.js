@@ -23,9 +23,6 @@ class SignUp extends Component {
   onSubmit = async(event) => {
     event.preventDefault();
     this.setState({error: '', loading: true});
-    // if(this.state.error.length === 1){
-    //   this.setState({error: ''});
-    // }
     try{
       const {firstName, lastName, email, password, passwordConfirmation} = this.state;
       console.log('vars from state', firstName, lastName, email, password, passwordConfirmation);
@@ -51,14 +48,10 @@ class SignUp extends Component {
     return (
       <div className="signup-container">
 
-        {
-          this.state.loading ?
-            <Spinner
-              loading={this.state.loading}
-            />
-          :
-          null
-        }
+        <Spinner
+          loading={this.state.loading}
+          // loading={true}
+        />
 
         <form
           onSubmit={this.onSubmit}

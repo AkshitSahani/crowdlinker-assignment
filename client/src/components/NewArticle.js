@@ -16,9 +16,6 @@ class NewArticle extends Component {
 
   submitArticle = async(e) => {
     e.preventDefault();
-    // if(this.state.error.length === 1){
-    //   this.setState({error: ''});
-    // }
     this.setState({error: '', loading: true});
     try{
       const {title, description} = this.state;
@@ -46,15 +43,10 @@ class NewArticle extends Component {
           Publish a New Article
         </h3>
 
-        {
-          this.state.loading ?
             <Spinner
               loading={this.state.loading}
+              // loading={true}
             />
-          :
-          null
-
-        }
 
         <form
           onSubmit={this.submitArticle}

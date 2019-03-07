@@ -8,8 +8,7 @@ class Spinner extends Component {
     return (
       <div
         className="spinner"
-        style={{height: this.props.height, width: this.props.width}}
-        // style={{left: this.props.width/2 - 100, top: this.props.height/2}}
+        style={{height: this.props.height, width: this.props.width, zIndex: (this.props.loading ? 5 : -5)}}
       >
         <PulseLoader
           sizeUnit={"px"}

@@ -13,8 +13,8 @@ class Articles extends Component {
     articles: null,
     view: 'listArticles',
     // articleHeight: null,
-    loading: true,
     count: 0,
+    loading: true,
   }
 
   fetchArticles = async(type) => {
@@ -27,20 +27,17 @@ class Articles extends Component {
       const url = `${global.url}/articles`;
       const response = await axios({method: "GET", url, headers: {Authorization: this.props.token}});
       console.log('response from get articles', response);
-      let finalState = {articles: response.data.data};
+      let finalState = {articles: response.data.data, loading: false};
       if(type === 'update'){
         finalState['view'] = 'listArticles';
       }
       console.log('finalState before setting', finalState);
       this.setState(finalState);
-      // if(type === 'update'){
-      //   this.setState({view: 'listArticles'});
-      // }
     }
     catch(e){
       console.log('e in getting articles', e);
       console.log('full error', e.response);
-      this.setState({error: e.response.data.message});
+      this.setState({error: e.response.data.message, loading: false});
     }
   }
 
@@ -49,16 +46,15 @@ class Articles extends Component {
   }
 
   finalizeArticleHeight = async (height) => {
-    // setTimeout(() => this.setState({count: this.state.count + 1}), 0);
     count += 1;
-    console.log('count in func', count);
-    console.log(' in function', height, articleHeight);
+    // console.log('count in func', count);
+    // console.log(' in function', height, articleHeight);
     if(!articleHeight || articleHeight < height){
-      console.log('inside check about to set new height',height, articleHeight);
+      // console.log('inside check about to set new height',height, articleHeight);
       articleHeight = height;
     }
     if(count === this.state.articles.length){
-      console.log('we inside final check');
+      // console.log('we inside final check');
       this.setState({articleHeight});
     }
   }
@@ -142,9 +138,9 @@ class Articles extends Component {
           </button>
         </div>
 
-        {/* <Spinner
-          loading={true}
-        /> */}
+        <Spinner
+          loading={this.state.loading}
+        />
 
         {
           this.state.view === 'newArticle' ?
