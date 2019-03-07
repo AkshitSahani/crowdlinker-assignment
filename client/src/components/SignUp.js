@@ -26,7 +26,7 @@ class SignUp extends Component {
     try{
       const {firstName, lastName, email, password, passwordConfirmation} = this.state;
       console.log('vars from state', firstName, lastName, email, password, passwordConfirmation);
-      const url = 'api/users';
+      const url = '/api/users';
       const formData = {first_name: firstName, last_name: lastName, email, password, password_confirmation: passwordConfirmation};
       console.log(url, formData)
       const response = await axios({method: "POST", data: formData, url});

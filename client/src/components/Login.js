@@ -18,7 +18,7 @@ class Login extends Component {
     e.preventDefault();
     this.setState({loading: true, error: ''});
     try{
-      const url = 'api/login';
+      const url = '/api/login';
       const {email, password} = this.state;
       const formData = {email, password};
       console.log('body before post', formData);
