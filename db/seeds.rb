@@ -20,8 +20,8 @@ descriptions = [
   'How a tiny protest at the University of Nebraska turned into a proxy war for the future of campus politics.',
   'When he was 16, Mark Clements talked his way into four life sentences. Twenty-eight years later, he talked his way out.',
   'Is Dr. Drew’s “Celebrity Rehab” therapy or tabloid voyeurism?',
-  'War stories from the world of Manhattan real estate, written during an era when everybody knew the Internet would completely change the business and nobody quite knew how.'
-  "Civil War-era fortifications have been discovered just below the prison's recreation yard, a study shows"
+  'War stories from the world of Manhattan real estate, written during an era when everybody knew the Internet would completely change the business and nobody quite knew how.',
+  "Civil War-era fortifications have been discovered just below the prison's recreation yard, a study shows."
 ]
 
 titles.each_with_index { |title, index| Article.create(title: title, description: descriptions[index])  }
