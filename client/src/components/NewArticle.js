@@ -19,7 +19,7 @@ class NewArticle extends Component {
     this.setState({error: '', loading: true});
     try{
       const {title, description} = this.state;
-      const url = `${global.url}/articles`;
+      const url = 'api/articles';
       const data = {title, description};
       const response = await axios({method: 'POST', url, data, headers: {Authorization: this.props.token}});
       console.log('resp from post article', response);

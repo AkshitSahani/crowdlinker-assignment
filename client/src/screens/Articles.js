@@ -24,7 +24,7 @@ class Articles extends Component {
       this.setState({articleHeight: null});
     }
     try{
-      const url = `${global.url}/articles`;
+      const url = 'api/articles';
       const response = await axios({method: "GET", url, headers: {Authorization: this.props.token}});
       console.log('response from get articles', response);
       let finalState = {articles: response.data.data, loading: false};
@@ -70,7 +70,7 @@ class Articles extends Component {
       const newArticles = [...articles.slice(0, index), newItem, ...articles.slice(index+1)];
       this.setState({articles: newArticles});
 
-      const url = `${global.url}/likes`;
+      const url = 'api/likes';
       const data = {article_id: id};
       const response = await axios({method: 'POST', url, data, headers: {Authorization: this.props.token}});
       console.log('resp from like', response);
