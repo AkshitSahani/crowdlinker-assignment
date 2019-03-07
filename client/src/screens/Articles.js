@@ -4,25 +4,38 @@ import {connect} from 'react-redux';
 import NewArticle from '../components/NewArticle';
 import Article from '../components/Article';
 import Spinner from '../components/Spinner';
+let articleHeight = null;
+let count = 0;
 
 class Articles extends Component {
 
   state = {
     articles: null,
     view: 'listArticles',
-    articleHeight: null,
-    loading: true
+    // articleHeight: null,
+    loading: true,
+    count: 0,
   }
 
   fetchArticles = async(type) => {
+    count = 0;
+    articleHeight = null;
+    if(this.state.articleHeight){
+      this.setState({articleHeight: null});
+    }
     try{
-      if(type === 'update'){
-        this.setState({view: 'listArticles'});
-      }
       const url = `${global.url}/articles`;
       const response = await axios({method: "GET", url, headers: {Authorization: this.props.token}});
       console.log('response from get articles', response);
-      this.setState({articles: response.data.data});
+      let finalState = {articles: response.data.data};
+      if(type === 'update'){
+        finalState['view'] = 'listArticles';
+      }
+      console.log('finalState before setting', finalState);
+      this.setState(finalState);
+      // if(type === 'update'){
+      //   this.setState({view: 'listArticles'});
+      // }
     }
     catch(e){
       console.log('e in getting articles', e);
@@ -35,9 +48,18 @@ class Articles extends Component {
     this.fetchArticles();
   }
 
-  finalizeArticleHeight = (height) => {
-    if(!this.state.articleHeight || this.state.articleHeight < height){
-      this.setState({articleHeight: height});
+  finalizeArticleHeight = async (height) => {
+    // setTimeout(() => this.setState({count: this.state.count + 1}), 0);
+    count += 1;
+    console.log('count in func', count);
+    console.log(' in function', height, articleHeight);
+    if(!articleHeight || articleHeight < height){
+      console.log('inside check about to set new height',height, articleHeight);
+      articleHeight = height;
+    }
+    if(count === this.state.articles.length){
+      console.log('we inside final check');
+      this.setState({articleHeight});
     }
   }
 
@@ -66,12 +88,15 @@ class Articles extends Component {
   onClick = () => this.state.view === 'listArticles' ? this.setState({view: 'newArticle'}) : this.setState({view: 'listArticles'});
 
   renderArticles = () => {
+    console.log('calling render articles');
     if(this.state.articles.length){
       return this.state.articles.map((article, index) => {
+        const style = this.state.articleHeight ? {height: articleHeight} : {};
+        console.log('style', style);
         return(
           <span
             className="article-parent"
-            style={{height: this.state.articleHeight}}
+            style={style}
             key={index}
           >
             <Article
@@ -93,6 +118,7 @@ class Articles extends Component {
   }
 
   render() {
+    // console.log('this.state.count', this.state.count);
     return (
       <div className="article-page">
         <div className="article-header">
@@ -115,6 +141,10 @@ class Articles extends Component {
             }
           </button>
         </div>
+
+        {/* <Spinner
+          loading={true}
+        /> */}
 
         {
           this.state.view === 'newArticle' ?

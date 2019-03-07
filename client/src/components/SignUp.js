@@ -16,7 +16,6 @@ class SignUp extends Component {
     passwordConfirmation: '',
     error: '',
     successMessage: '',
-    loading: false
   }
 
   onChange = (event, type) => this.setState({[type]: event.target.value});
